@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task1_2_1</title>
+</head>
+
+<body>
+    <script>
+       //-------------------------------------------Part 2------------------------------------------
+       //1)
+       let operation = prompt("Enter one operation from these : (+, -, *, /)", "");
+       let num1 = prompt("Enter the first number", "");
+       let num2 = prompt("Enter the second number", "");
+       let result = 0;
+
+       if (operation === "" || num1 === "" || num2 === "") {
+           document.write("Error.. Please reload the page and enter values as required.");
+       } else {
+           if (operation === "+") {
+               result = Number(num1) + Number(num2);
+               document.write(`The result of adding ${num1} to ${num2} is ${result}`);
+
+           } else if (operation === "-") {
+               result = Number(num1) - Number(num2);
+               document.write(`The result of subtracting ${num2} from ${num1} is ${result}`);
+
+           } else if (operation === "*") {
+               result = Number(num1) * Number(num2);
+               document.write(`The result of multiplying ${num1} by ${num2} is ${result}`);
+
+           } else if (operation === "/") {
+               result = Number(num1) / Number(num2);
+               document.write(`The result of dividing ${num1} by ${num2} is ${result}`);
+
+           } else {
+               document.write("Error.. Please reload the page and enter a valid operation.");
+           }
+       }
+    </script>
+</body>
+</html>
