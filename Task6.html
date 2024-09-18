@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task6_Events</title>
+    <style>
+        /* 1. Hover effect */
+        #hoverText {
+            display: inline;
+            font-size: 24px;
+            padding: 10px;
+            transition: background-color 0.3s, font-weight 0.3s;
+        }
+
+        #hoverText:hover {
+            background-color: yellow;
+            font-weight: bold;
+            border: 2px solid black;
+        }
+
+        /* 2. Flag display */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #flag {
+            display: none;
+            width: 300px;
+            height: 150px;
+            border: 2px solid black;
+            margin-top: 20px;
+        }
+
+        /* 3. Error message styling */
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        /* 4. Show/Hide Content */
+        .content {
+            display: none;
+            margin: 10px 0;
+        }
+
+        /* 6. Color animation */
+        @keyframes colorChange {
+            0% {
+                background-color: blue;
+            }
+
+            10% {
+                background-color: red;
+            }
+
+            20% {
+                background-color: green;
+            }
+
+            30% {
+                background-color: yellow;
+            }
+
+            40% {
+                background-color: purple;
+            }
+        }
+
+        #animatedBox {
+            width: 150px;
+            height: 150px;
+            animation: colorChange 4s infinite;
+            border: 2px solid black;
+        }
+
+        .animation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Hover effect -->
+    <h2><center>1. Hover Effect</center></h2>
+    <div id="hoverText">Hello World !!</div>
+
+    <hr color="white">
+    <hr color="red">
+    <hr color="black">
+    <hr color="green">
+
+    <!-- 2. Flag display -->
+    <h2><center>2. Country Flag Selector</center></h2>
+    <div class="container">
+        <select id="countrySelect" onchange="showFlag()">
+            <option value="none">--Select a country--</option>
+            <option value="jordan">Jordan</option>
+            <option value="palestine">Palestine</option>
+            <option value="syria">Syria</option>
+            <option value="lebanon">Lebanon</option>
+        </select>
+        <img id="flag" src="" alt="Flag will appear here" />
+    </div>
+
+    <script>
+        // 2. Flag display
+        function showFlag() {
+            const country = document.getElementById("countrySelect").value;
+            const flagImg = document.getElementById("flag");
+
+            switch (country) {
+                case 'jordan':
+                    flagImg.src = 'Media/Jordan_Flag.png';
+                    break;
+                case 'palestine':
+                    flagImg.src = 'Media/Palestine_Flag.png';
+                    break;
+                case 'syria':
+                    flagImg.src = 'Media/Syria_Flag.png';
+                    break;
+                case 'lebanon':
+                    flagImg.src = 'Media/Lebanon_Flag.png';
+                    break;
+                default:
+                    flagImg.src = '';
+            }
+
+            if (country !== 'none') {
+                flagImg.style.display = 'block';
+            } else {
+                flagImg.style.display = 'none';
+            }
+        }
+    </script>
+
+    <hr color="white">
+    <hr color="red">
+    <hr color="black">
+    <hr color="green">
+
+    <!-- 3. Password Validation -->
+    <h2><center>3. Password Validation</center></h2>
+    <form id="passwordForm" oninput="validatePassword()">
+        <label for="password">Password (min 6 characters):</label>
+        <input type="password" id="password" name="password" required>
+        <span id="passwordError" class="error"></span>
+        <br><br>
+
+        <label for="confirmPassword">Repeat password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <span id="confirmError" class="error"></span>
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // 3. Password Validation
+        function validatePassword() {
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const passwordError = document.getElementById("passwordError");
+            const confirmError = document.getElementById("confirmError");
+
+            passwordError.textContent = '';
+            confirmError.textContent = '';
+
+            if (password.length > 0 && password.length < 6) {
+                passwordError.textContent = 'Too short';
+            }
+
+            if (password !== confirmPassword && confirmPassword.length > 0) {
+                confirmError.textContent = "The two passwords don't match";
+            }
+        }
+    </script>
+
+    <hr color="white">
+    <hr color="red">
+    <hr color="black">
+    <hr color="green">
+
+    <!-- 4. Show/Hide Content -->
+    <h2><center>4. Show/Hide Content</center></h2>
+
+    <div>
+        <h3>Who is Manar Khamees ?! <button onclick="toggleContent('content1')">Show</button></h3>
+        <div id="content1" class="content">
+            Manar Khamees is an hopeful, optimistic, Jordanian Software Engineer..
+        </div>
+    </div>
+
+    <div>
+        <h3>What is happening here ?! <button onclick="toggleContent('content2')">Show</button></h3>
+        <div id="content2" class="content">
+            It is a solution of an event task about using "onclick" event when the "show" button pressed..
+        </div>
+    </div>
+
+    <script>
+        // 4. Show/Hide Content
+        function toggleContent(contentId) {
+            const content = document.getElementById(contentId);
+            const button = content.previousElementSibling.querySelector('button');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                button.textContent = 'Hide';
+            } else {
+                content.style.display = 'none';
+                button.textContent = 'Show';
+            }
+        }
+    </script>
+
+    <hr color="white">
+    <hr color="red">
+    <hr color="black">
+    <hr color="green">
+
+    <!-- 5. Text Formatting -->
+    <h2><center>5. Text Formatting</center></h2>
+    <div>
+        <select id="fontType" onchange="applyFormatting()">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+        </select>
+
+        <select id="fontSize" onchange="applyFormatting()">
+            <option value="14px">14pt</option>
+            <option value="18px">18pt</option>
+            <option value="22px">22pt</option>
+            <option value="28px">28pt</option>
+            <option value="44px">44pt</option>
+        </select>
+
+        <input type="checkbox" id="bold" onchange="applyFormatting()"> Bold
+        <input type="checkbox" id="italic" onchange="applyFormatting()"> Italic
+        <input type="checkbox" id="underline" onchange="applyFormatting()"> Underline
+    </div>
+
+    <textarea id="textBox" style="width: 100%; height: 100px;">Palestine will be Free</textarea>
+
+    <script>
+        // 5. Text Formatting
+        function applyFormatting() {
+            const textBox = document.getElementById('textBox');
+            const fontType = document.getElementById('fontType').value;
+            const fontSize = document.getElementById('fontSize').value;
+            const isBold = document.getElementById('bold').checked;
+            const isItalic = document.getElementById('italic').checked;
+            const isUnderline = document.getElementById('underline').checked;
+
+            textBox.style.fontFamily = fontType;
+            textBox.style.fontSize = fontSize;
+            textBox.style.fontWeight = isBold ? 'bold' : 'normal';
+            textBox.style.fontStyle = isItalic ? 'italic' : 'normal';
+            textBox.style.textDecoration = isUnderline ? 'underline' : 'none';
+        }
+    </script>
+
+    <hr color="white">
+    <hr color="red">
+    <hr color="black">
+    <hr color="green">
+
+    <!-- 6. Color Animation -->
+    <h2><center>6. Color Animation</center></h2>
+    <div class="animation-container">
+        <div id="animatedBox"></div>
+    </div>
+
+</body>
+</html>
