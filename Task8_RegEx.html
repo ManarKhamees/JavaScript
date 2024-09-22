@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        form {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-row input {
+            width: 48%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: black;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: rgb(148, 28, 110);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: darkgreen;
+        }
+
+        hr {
+            margin: 15px 0;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+
+        .info-note {
+            text-align: center;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #888;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="registrationForm">
+        <h2>Registration</h2>
+        <div class="info-note">Please fill in your information below:</div>
+        <hr>
+
+        <div class="form-row">
+            <div>
+                <label for="fname">First Name:</label>
+                <input type="text" id="fname" name="firstName" placeholder="Enter your first name" required>
+                <span class="error" id="fnameError"></span>
+            </div>
+            <div>
+                <label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lastName" placeholder="Enter your last name" required>
+                <span class="error" id="lnameError"></span>
+            </div>
+        </div>
+
+        <label for="birthdate">Birth Date:</label>
+        <input type="date" id="birthdate" name="birthdate" required>
+        <span class="error" id="birthdateError"></span>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <span class="error" id="emailError"></span>
+
+        <label for="confirm-email">Confirm Email:</label>
+        <input type="email" id="confirm-email" name="confirm-email" placeholder="Re-enter your email" required>
+        <span class="error" id="confirmEmailError"></span>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <span class="error" id="passwordError"></span>
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter your password"
+            required>
+        <span class="error" id="confirmPasswordError"></span>
+
+        <label for="phone">Mobile Number:</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your mobile number" required>
+        <span class="error" id="phoneError"></span>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+        document.getElementById("registrationForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form from submitting until validation
+
+            // Clear previous error messages
+            const errors = document.getElementsByClassName("error");
+            for (let error of errors) {
+                error.textContent = "";
+            }
+
+            let isValid = true;
+
+            // 1. First & Last Name Validation
+            const namePattern = /^[A-Za-z]+$/;
+            const fname = document.getElementById("fname").value;
+            const lname = document.getElementById("lname").value;
+            if (!namePattern.test(fname)) {
+                document.getElementById("fnameError").textContent = "First name must contain only letters.";
+                isValid = false;
+            }
+            if (!namePattern.test(lname)) {
+                document.getElementById("lnameError").textContent = "Last name must contain only letters.";
+                isValid = false;
+            }
+
+            // 2. Birthdate Validation
+            const birthdate = document.getElementById("birthdate").value;
+            if (new Date(birthdate) >= new Date()) {
+                document.getElementById("birthdateError").textContent = "Birthdate must be in the past.";
+                isValid = false;
+            }
+
+            // 3. Email Validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const email = document.getElementById("email").value;
+            const confirmEmail = document.getElementById("confirm-email").value;
+            if (!emailPattern.test(email)) {
+                document.getElementById("emailError").textContent = "Invalid email format.";
+                isValid = false;
+            }
+            if (email !== confirmEmail) {
+                document.getElementById("confirmEmailError").textContent = "Emails do not match.";
+                isValid = false;
+            }
+
+            // 4. Password Validation
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+
+            // a. Start with a capital letter
+            if (!/^[A-Z]/.test(password)) {
+                document.getElementById("passwordError").textContent = "Password must start with a capital letter.";
+                isValid = false;
+            }
+
+            // b. Contain at least two numbers
+            const digitCount = (password.match(/\d/g) || []).length;
+            if (digitCount < 2) {
+                document.getElementById("passwordError").textContent = "Password must contain at least 2 numbers.";
+                isValid = false;
+            }
+
+            // c. Contain at least one special character
+            if (!/[!@#\$%\^\&*\)\(+=._-]/.test(password)) {
+                document.getElementById("passwordError").textContent = "Password must contain at least one special character.";
+                isValid = false;
+            }
+
+            // d. Length between 8 and 32 characters
+            if (password.length < 8 || password.length > 32) {
+                document.getElementById("passwordError").textContent = "Password length must be between 8 and 32 characters.";
+                isValid = false;
+            }
+
+            // e. Password and confirm password must match
+            if (password !== confirmPassword) {
+                document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                isValid = false;
+            }
+
+            // 5. Mobile Number Validation
+            const phonePattern = /^\d{10}$/;
+            const phone = document.getElementById("phone").value;
+            if (!phonePattern.test(phone)) {
+                document.getElementById("phoneError").textContent = "Mobile number must be 10 digits.";
+                isValid = false;
+            }
+
+            // If the form is valid, submit the form or take appropriate action
+            if (isValid) {
+                alert("Form submitted successfully!");
+            }
+        });
+    </script>
+
+</body>
+</html>
