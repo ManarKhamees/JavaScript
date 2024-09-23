@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task9_1_Storage</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        /* Card styling */
+        .card {
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            background-color: #f9f9f9;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .card p {
+            font-family: 'Arial', sans-serif;
+            color: #555;
+        }
+
+        #cards-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="personalInfoForm">
+        <h2>
+            <center>Personal Info Form</center>
+        </h2>
+        <hr color="red">
+        <hr color="black">
+        <hr color="green">
+
+        <p><b><u>Fill In Your Info:</u></b></p>
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="Your name" placeholder="Enter your name" required><br><br>
+
+        <label for="age">Age:</label><br>
+        <input type="text" id="age" name="Your age" placeholder="Enter your age" required><br><br>
+
+        <label for="gender">Gender:</label><br>
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label><br><br>
+
+        <label for="description">Brief Description:</label><br>
+        <textarea id="description" name="Your description" placeholder="Enter your brief description" rows="4" required></textarea><br><br>
+
+        <label for="major_uni">Major and University:</label><br>
+        <input type="text" id="major_uni" name="Your major_uni" placeholder="Enter your major & uni" required><br><br>
+
+        <label for="programming">Programming Languages You Prefer:</label><br>
+        <label><input type="checkbox" name="languages" value="JavaScript"> JavaScript</label><br>
+        <label><input type="checkbox" name="languages" value="Python"> Python</label><br>
+        <label><input type="checkbox" name="languages" value="Java"> Java</label><br>
+        <label><input type="checkbox" name="languages" value="C#"> C#</label><br>
+        <label><input type="checkbox" name="languages" value="Ruby"> Ruby</label><br>
+        <label><input type="checkbox" name="languages" value="PHP"> PHP</label><br>
+        <label><input type="checkbox" name="languages" value="C++"> C++</label><br>
+
+        <p class="error" id="error-message" style="display: none;">Please select at least 3 languages.</p>
+
+        <br><input type="submit" value="Submit">
+        <hr color="white">
+        <hr color="red">
+        <hr color="black">
+        <hr color="green">
+    </form>
+
+    <!-- Container to render cards -->
+    <div id="cards-container"></div>
+
+    <script>
+        document.getElementById('personalInfoForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const gender = document.querySelector('input[name="gender"]:checked') ? document.querySelector('input[name="gender"]:checked').value : '';
+            const description = document.getElementById('description').value;
+            const majorUni = document.getElementById('major_uni').value;
+
+            const selectedLanguages = Array.from(document.querySelectorAll('input[name="languages"]:checked')).map(lang => lang.value);
+
+            if (selectedLanguages.length < 3) {
+                document.getElementById('error-message').style.display = 'block'; // Show error message
+                return;
+            } else {
+                document.getElementById('error-message').style.display = 'none'; // Hide error message
+            }
+
+            // Create an object to store the information
+            const formData = {
+                name,
+                age,
+                gender,
+                description,
+                majorUni,
+                selectedLanguages
+            };
+
+            let storedData = JSON.parse(localStorage.getItem('personalInfo')) || [];
+            storedData.push(formData);
+            localStorage.setItem('personalInfo', JSON.stringify(storedData));
+
+            // Render the cards to the page
+            renderCards();
+        });
+
+        // Function to render cards from localStorage
+        function renderCards() {
+            const storedData = JSON.parse(localStorage.getItem('personalInfo')) || [];
+            const cardsContainer = document.getElementById('cards-container');
+            cardsContainer.innerHTML = ''; // Clear previous cards
+
+            storedData.forEach(data => {
+                // Create a card for each entry
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <h3>${data.name}</h3>
+                    <p><strong>Age:</strong> ${data.age}</p>
+                    <p><strong>Gender:</strong> ${data.gender}</p>
+                    <p><strong>Description:</strong> ${data.description}</p>
+                    <p><strong>Major & University:</strong> ${data.majorUni}</p>
+                    <p><strong>Languages:</strong> ${data.selectedLanguages.join(', ')}</p>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        // Initial call to render existing cards when the page loads
+        window.onload = renderCards;
+    </script>
+
+</body>
+</html>

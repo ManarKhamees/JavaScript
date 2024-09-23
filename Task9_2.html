@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task9_2</title>
+    <style>
+        /* Card styling */
+        .card {
+            border: 1px solid red;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            background-color: #e8e8e8;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-family: Arial, sans-serif;
+            color: black;
+        }
+
+        .card p {
+            font-family: 'Arial', sans-serif;
+            color: #555;
+        }
+
+        #cards-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            margin-bottom: 10px;
+            width: 98%;
+            padding: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #ff0011;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 11%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>
+        <center>Project Info Form</center>
+    </h2>
+
+    <hr color="red">
+    <hr color="black">
+    <hr color="green">
+
+    <form id="projectForm">
+        <label for="subject">Project Subject:</label><br>
+        <input type="text" id="subject" name="subject" placeholder="Enter the project subject" required><br>
+
+        <label for="description">Project Description:</label><br>
+        <textarea id="description" name="description" placeholder="Enter the project description" rows="4"
+            required></textarea><br>
+
+        <label for="userTypes">User Types (e.g., Admin, Customer, etc.):</label><br>
+        <input type="text" id="userTypes" name="userTypes" placeholder="Enter user types" required><br>
+
+        <label for="technologyUsed">Technology Used:</label><br>
+        <input type="text" id="technologyUsed" name="technologyUsed" placeholder="Enter the technologies used"
+            required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Container to render cards -->
+    <div id="cards-container"></div>
+
+    <script>
+        document.getElementById('projectForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const subject = document.getElementById('subject').value;
+            const description = document.getElementById('description').value;
+            const userTypes = document.getElementById('userTypes').value;
+            const technologyUsed = document.getElementById('technologyUsed').value;
+
+            // Create an object to store the information
+            const projectData = {
+                subject,
+                description,
+                userTypes,
+                technologyUsed
+            };
+
+            let storedProjects = JSON.parse(sessionStorage.getItem('projects')) || [];
+            storedProjects.push(projectData);
+            sessionStorage.setItem('projects', JSON.stringify(storedProjects));
+
+            // Render the cards to the page
+            renderCards();
+        });
+
+        // Function to render cards from sessionStorage
+        function renderCards() {
+            const storedProjects = JSON.parse(sessionStorage.getItem('projects')) || [];
+            const cardsContainer = document.getElementById('cards-container');
+            cardsContainer.innerHTML = '';  // Clear previous cards
+
+            storedProjects.forEach(project => {
+                // Create a card for each entry
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <h3>${project.subject}</h3>
+                    <p><strong>Description:</strong> ${project.description}</p>
+                    <p><strong>User Types:</strong> ${project.userTypes}</p>
+                    <p><strong>Technology Used:</strong> ${project.technologyUsed}</p>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        // Initial call to render existing cards when the page loads
+        window.onload = renderCards;
+    </script>
+
+</body>
+
+</html>
